@@ -1,11 +1,20 @@
-import { View } from 'react-native';
+import { Text, View } from 'react-native';
 
-import { ThemedText } from '@/components/atoms/ThemedText';
+import { Deck } from '@/components/atoms/Deck';
+import { PROFILES_DATA } from '@/constants';
 
 export default function HomeScreen() {
+  const renderCard = (item) => {
+    return (
+      <>
+        <Text>{item.name}</Text>
+      </>
+    )
+  }
+
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <ThemedText>Hello!</ThemedText>
+    <View style={{ flex: 1 }}>
+      <Deck data={PROFILES_DATA} renderCard={renderCard} />
     </View>
   );
 }

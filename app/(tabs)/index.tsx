@@ -29,8 +29,8 @@ export default function HomeScreen() {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Deck data={PROFILES_DATA} renderCard={renderCard}
-        onSwipeLeft={() => console.log('Something was swipped')}
-        onSwipeRight={() => console.log('Something was swipped')}
+        onSwipeLeft={() => { }}
+        onSwipeRight={() => { }}
         renderNoMoreCards={renderNoMoreCards}
       />
     </View>

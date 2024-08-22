@@ -1,5 +1,8 @@
-import { FC, ReactNode, useState } from "react";
-import { Animated, Dimensions, PanResponder, View } from "react-native"
+import { FC, ReactNode, useEffect, useState } from "react";
+import {
+    Animated, Dimensions, PanResponder,
+    LayoutAnimation, UIManager, View
+} from "react-native"
 
 import { PROFILES_DATA } from "@/constants"
 
@@ -57,7 +60,6 @@ export const Deck: FC<Props> = ({
     }
 
     const onSwipeComplete = (direction: string) => {
-        // const { onSwipeLeft, onSwipeRight } = 
         const item = data[cardIndex];
 
         direction === 'right' ? onSwipeRight(item) : onSwipeLeft(item);
@@ -83,17 +85,36 @@ export const Deck: FC<Props> = ({
         }
     }
 
-    if (PROFILES_DATA.length < cardIndex) return renderNoMoreCards();
+    // useEffect(() => { // No neccesary, I would add a soft animation every time cardIndex changes
+    //     UIManager.setLayoutAnimationEnabledExperimental &&
+    //         UIManager.setLayoutAnimationEnabledExperimental(true);
+    //     LayoutAnimation.spring();
+    // }, [cardIndex])
 
-    return PROFILES_DATA.map((item, i) => {
-        if (i + 1 < cardIndex) return null;
-        if (item.id === cardIndex) {
-            return <Animated.View key={item.id}
-                style={getCardStyle()}
-                {...panResponder.panHandlers}
-            >
-                {renderCard(item)}
-            </Animated.View>
-        }
-    })
+    const renderCards = () => {
+        if (PROFILES_DATA.length < cardIndex) return renderNoMoreCards();
+
+        return PROFILES_DATA.map((item, i) => {
+            if (i + 1 < cardIndex) return null;
+            if (item.id === cardIndex) {
+                return <Animated.View key={item.id}
+                    style={getCardStyle()}
+                    {...panResponder.panHandlers}
+                >
+                    {renderCard(item)}
+                </Animated.View>
+            }
+            return (
+                <Animated.View key={item.id} style={{ position: 'absolute', top: 5 * (i - cardIndex), left: 2 * (i - cardIndex) }}>
+                    {renderCard(item)}
+                </Animated.View>
+            )
+        }).reverse();
+    }
+
+    return (
+        <View>
+            {renderCards()}
+        </View>
+    )
 }

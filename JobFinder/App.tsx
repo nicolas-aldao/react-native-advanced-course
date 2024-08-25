@@ -6,13 +6,39 @@
  */
 
 import React from 'react';
-import { Text, View } from 'react-native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { NavigationContainer } from '@react-navigation/native';
 
-function App(): React.JSX.Element {
+import { WelcomeScreen } from './src/components/pages/WelcomeScreen';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+
+const Tab = createBottomTabNavigator();
+
+function TabNavigator() {
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>Hola!</Text>
-    </View>
+    <Tab.Navigator>
+      <Tab.Screen name="Welcome"
+        options={{
+          title: 'Welcome',
+          headerShown: false,
+          tabBarStyle: { display: 'none' },
+        }}
+        component={WelcomeScreen} />
+    </Tab.Navigator>
+  );
+}
+function App(): React.JSX.Element {
+  const Stack = createNativeStackNavigator();
+
+  return (
+    <SafeAreaProvider>
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen name="Tabs" component={TabNavigator} options={{ headerShown: false }} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </SafeAreaProvider>
   );
 }
 

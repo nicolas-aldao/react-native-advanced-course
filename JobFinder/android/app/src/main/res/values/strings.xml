@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">JobFinder</string>
+    <string name="facebook_app_id">1189620742087004</string>
+    <string name="facebook_client_token">faf671ce71fdbb254d1ff6ea3b098020</string>
 </resources>

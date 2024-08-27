@@ -1,7 +1,9 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import MapView, { Details, Marker, PROVIDER_GOOGLE, Region } from 'react-native-maps';
+
+const API_KEY = '';
 
 export const MapScreen = () => {
     const [region, setRegion] = useState({
@@ -13,22 +15,8 @@ export const MapScreen = () => {
             latitudeDelta: 0.01,
         },
     });
-    const [markers, setMarkers] = useState([
-        {
-            title: 'Marker 1',
-            coordinate: {
-                latitude: 37.78825,
-                longitude: -122.4324,
-            },
-        },
-        {
-            title: 'Marker 2',
-            coordinate: {
-                latitude: 37.78925,
-                longitude: -122.4314,
-            },
-        },
-    ])
+    const [markers, setMarkers] = useState(undefined);
+    const [placeImage, setPlaceImage] = useState(undefined);
 
     const data = {
         includedTypes: ['restaurant', 'bar', 'bakery', 'cafe'],
@@ -57,7 +45,7 @@ export const MapScreen = () => {
         const res = await axios.post('https://places.googleapis.com/v1/places:searchNearby', data, {
             headers: {
                 'Content-Type': 'application/json',
-                'X-Goog-Api-Key': '',
+                'X-Goog-Api-Key': API_KEY,
                 'X-Goog-FieldMask': 'places.displayName,places.location,places.photos',
             },
         })
@@ -70,6 +58,7 @@ export const MapScreen = () => {
                             latitude: place.location.latitude,
                             longitude: place.location.longitude,
                         },
+                        photo: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=300&photo_reference=${place.photos[0].name.split('/photos/')[1]}&key=${API_KEY}`,
                     });
                 });
                 return markersList;
@@ -105,15 +94,38 @@ export const MapScreen = () => {
                     region={region.region}
                     onRegionChangeComplete={(regionParam: Region, details: Details) => onRegionChangeComplete(regionParam, details.isGesture)}
                 >
-                    {markers.map(marker => (
+                    {markers && markers?.map(marker => (
                         <Marker
                             key={marker.title}
                             title={marker.title}
                             coordinate={marker.coordinate}
+                            onPress={() => setPlaceImage(marker.photo)}
                         />
                     ))}
                 </MapView>
                 <View style={{ paddingVertical: 24 }}>
+                    {placeImage &&
+                        <View>
+
+                            <Image
+                                source={{ uri: placeImage }}
+                                width={350}
+                                height={300}
+                                style={{
+                                    zIndex: 4, borderRadius: 25, marginBottom: 12,
+                                }}
+                            />
+                            <TouchableOpacity
+                                style={{
+                                    paddingVertical: 6, paddingHorizontal: 12, justifyContent: 'center', alignItems: 'center',
+                                    backgroundColor: 'white', borderRadius: 24, position: 'absolute',
+                                    zIndex: 5, margin: 12
+                                }}
+                                onPress={() => setPlaceImage(undefined)}>
+                                <Text style={{ fontSize: 16, fontWeight: 500 }}>Close</Text>
+                            </TouchableOpacity>
+                        </View>
+                    }
                     <TouchableOpacity
                         style={{
                             padding: 12, opacity: 1,

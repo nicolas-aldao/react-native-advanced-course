@@ -96,17 +96,22 @@ export const MapScreen = () => {
                 >
                     {markers && markers?.map(marker => (
                         <Marker
-                            key={marker.title}
                             title={marker.title}
                             coordinate={marker.coordinate}
-                            onPress={() => setPlaceImage(marker.photo)}
-                        />
+                            key={marker.title}
+                            onPress={() => setPlaceImage(marker.photo)}>
+                            <Image
+                                source={require('./../../assets/images/pin.png')}
+                                resizeMode={'contain'}
+                                style={{ width: 30, height: 30 }}
+                            />
+                        </Marker>
                     ))}
+
                 </MapView>
-                <View style={{ paddingVertical: 24 }}>
+                <View style={{ paddingVertical: 16, alignItems: 'center' }}>
                     {placeImage &&
                         <View>
-
                             <Image
                                 source={{ uri: placeImage }}
                                 width={350}
@@ -117,23 +122,25 @@ export const MapScreen = () => {
                             />
                             <TouchableOpacity
                                 style={{
-                                    paddingVertical: 6, paddingHorizontal: 12, justifyContent: 'center', alignItems: 'center',
+                                    paddingVertical: 6, paddingHorizontal: 12,
                                     backgroundColor: 'white', borderRadius: 24, position: 'absolute',
-                                    zIndex: 5, margin: 12
+                                    zIndex: 4, margin: 12,
                                 }}
                                 onPress={() => setPlaceImage(undefined)}>
                                 <Text style={{ fontSize: 16, fontWeight: 500 }}>Close</Text>
                             </TouchableOpacity>
                         </View>
                     }
-                    <TouchableOpacity
-                        style={{
-                            padding: 12, opacity: 1,
-                            borderRadius: 12, backgroundColor: "#4F4D"
-                        }}
-                        onPress={() => fetchData()}>
-                        <Text style={{ color: 'black', fontSize: 18 }}>Buscar en esta zona</Text>
-                    </TouchableOpacity>
+                    <View style={{ width: 200, justifyContent: 'center' }}>
+                        <TouchableOpacity
+                            style={{
+                                padding: 12, opacity: 1,
+                                borderRadius: 12, backgroundColor: "#4F4D"
+                            }}
+                            onPress={() => fetchData()}>
+                            <Text style={{ color: 'black', fontSize: 18, textAlign: 'center' }}>Buscar en esta zona</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
             </View>
         </>

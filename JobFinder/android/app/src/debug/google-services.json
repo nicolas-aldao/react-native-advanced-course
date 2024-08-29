@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "181183575120",
+    "project_id": "push-notifications-test-29f2c",
+    "storage_bucket": "push-notifications-test-29f2c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:181183575120:android:7c763814f9251bb0184d55",
+        "android_client_info": {
+          "package_name": "com.jobfinder"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDI-czUZloMka_OAp0m3h4c7OfVeppMPJ0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import MapView, { Details, Marker, PROVIDER_GOOGLE, Region } from 'react-native-maps';
 
-const API_KEY = '';
+const GOOGLE_PLACES_API_KEY = '';
 
 export const MapScreen = () => {
     const [region, setRegion] = useState({
@@ -41,11 +41,15 @@ export const MapScreen = () => {
         fetchData();
     }, []);
 
+    useEffect(() => {
+        console.log("🚀 ~ MapScreen ~ markers:", markers);
+    }, [markers]);
+
     const fetchData = async () => {
         const res = await axios.post('https://places.googleapis.com/v1/places:searchNearby', data, {
             headers: {
                 'Content-Type': 'application/json',
-                'X-Goog-Api-Key': API_KEY,
+                'X-Goog-Api-Key': GOOGLE_PLACES_API_KEY,
                 'X-Goog-FieldMask': 'places.displayName,places.location,places.photos',
             },
         })
@@ -58,7 +62,7 @@ export const MapScreen = () => {
                             latitude: place.location.latitude,
                             longitude: place.location.longitude,
                         },
-                        photo: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=300&photo_reference=${place.photos[0].name.split('/photos/')[1]}&key=${API_KEY}`,
+                        photo: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=300&photo_reference=${place.photos[0].name.split('/photos/')[1]}&key=${GOOGLE_PLACES_API_KEY}`,
                     });
                 });
                 return markersList;
@@ -77,6 +81,14 @@ export const MapScreen = () => {
                 <ActivityIndicator size='large' />
             </View>
         )
+    }
+
+    const CustomMarker = () => {
+        return (<Image
+            source={require('./../../assets/images/pin.png')}
+            resizeMode={'contain'}
+            style={{ width: 30, height: 30 }}
+        />)
     }
 
     return (
@@ -100,11 +112,7 @@ export const MapScreen = () => {
                             coordinate={marker.coordinate}
                             key={marker.title}
                             onPress={() => setPlaceImage(marker.photo)}>
-                            <Image
-                                source={require('./../../assets/images/pin.png')}
-                                resizeMode={'contain'}
-                                style={{ width: 30, height: 30 }}
-                            />
+                            <CustomMarker />
                         </Marker>
                     ))}
 

@@ -64,31 +64,9 @@ function MainFlowNavigator() {
           // tabBarStyle: { display: 'none' },
         }}
         component={DeckScreen} />
-      <Tab.Screen name="Review"
-        options={{
-          title: 'Review',
-          headerShown: false,
-          // tabBarStyle: { display: 'none' },
-        }}
-        component={ReviewFlowStackScreen} />
     </Tab.Navigator>
   );
 }
-
-const ReviewFlowStack = createNativeStackNavigator();
-
-const ReviewFlowStackScreen = () => (
-  <ReviewFlowStack.Navigator screenOptions={{ headerShown: true }}>
-    <ReviewFlowStack.Screen
-      name="Deck"
-      component={DeckScreen}
-    />
-    <ReviewFlowStack.Screen
-      name="Settings"
-      component={SettingsScreen}
-    />
-  </ReviewFlowStack.Navigator>
-);
 
 function App(): React.JSX.Element {
   const Stack = createNativeStackNavigator();
